@@ -1,7 +1,5 @@
-// src/models/user.model.js
-
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
     first_name: { type: String, required: true },
@@ -13,11 +11,20 @@ const userSchema = new mongoose.Schema({
     role: { type: String, default: 'user' }
 });
 
-userSchema.pre('save', function(next) {
+// Middleware para cifrar la contraseña antes de guardar
+userSchema.pre('save', async function(next) {
     if (this.isModified('password') || this.isNew) {
-        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
+        try {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(this.password, salt);
+            this.password = hashedPassword;
+            next();
+        } catch (err) {
+            next(err);
+        }
+    } else {
+        next();
     }
-    next();
 });
 
 const User = mongoose.model('User', userSchema);

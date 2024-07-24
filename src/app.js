@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+import 'dotenv/config';
+dotenv.config(); 
 import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
@@ -9,12 +12,11 @@ import productRouter from './routes/products.js';
 import cartRouter from './routes/carts.js';
 import userRouter from './routes/users.js';
 import ProductManager from './managers/product.manager.js';
-import passport from './config/passport.js'; // Importa configuración de Passport
-import sessionRoutes from './routes/sessions.js'; // Importa rutas de sesión
-import cookieParser from 'cookie-parser'; // Para manejar cookies
-import dotenv from 'dotenv';
+import passport from './config/passport.js';
+import sessionRoutes from './routes/sessions.js';
+import cookieParser from 'cookie-parser';
 
-dotenv.config(); // Carga variables de entorno desde el archivo .env
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,8 +38,8 @@ const productManager = new ProductManager();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(join(__dirname, 'public')));
-app.use(cookieParser()); // Middleware para parsear cookies
-app.use(passport.initialize()); // Inicializa Passport
+app.use(cookieParser());
+app.use(passport.initialize());
 
 // Configurar Handlebars
 app.engine('handlebars', exphbs({
@@ -55,7 +57,7 @@ app.set('views', join(__dirname, 'views'));
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/users', userRouter);
-app.use('/api/sessions', sessionRoutes); // Agrega las rutas de sesión
+app.use('/api/sessions', sessionRoutes);
 
 // Página de inicio
 app.get('/', async (req, res) => {

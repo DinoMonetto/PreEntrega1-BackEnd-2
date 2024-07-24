@@ -1,3 +1,4 @@
+// src/routes/sessions.js
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
@@ -18,11 +19,11 @@ router.post('/login', (req, res, next) => {
                 res.send(err);
             }
 
-            const token = jwt.sign({ id: user._id }, 'process.env.JWT_SECRET');
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
             res.cookie('jwt', token, { httpOnly: true });
             return res.json({ token });
         });
-    })(req, res);
+    })(req, res, next);
 });
 
 router.get('/current', passport.authenticate('jwt-cookie', { session: false }), (req, res) => {

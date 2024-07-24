@@ -4,7 +4,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcrypt';
 import User from '../models/user.model.js';
 
-
+// Configuración de la estrategia local
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -23,9 +23,10 @@ passport.use(new LocalStrategy({
     }
 }));
 
+// Configuración de la estrategia JWT
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'process.env.JWT_SECRET'
+    secretOrKey: process.env.JWT_SECRET // Utiliza la variable de entorno correctamente
 };
 
 passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
@@ -41,6 +42,7 @@ passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
     }
 }));
 
+// Extractor de cookies para JWT
 const cookieExtractor = (req) => {
     let token = null;
     if (req && req.cookies) {
@@ -49,9 +51,10 @@ const cookieExtractor = (req) => {
     return token;
 };
 
+// Configuración de la estrategia JWT con cookies
 passport.use('jwt-cookie', new JwtStrategy({
     jwtFromRequest: cookieExtractor,
-    secretOrKey: 'your_jwt_secret'
+    secretOrKey: process.env.JWT_SECRET // Utiliza la variable de entorno correctamente
 }, async (jwt_payload, done) => {
     try {
         const user = await User.findById(jwt_payload.id);

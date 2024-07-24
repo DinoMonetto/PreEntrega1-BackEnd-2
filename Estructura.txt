@@ -5,11 +5,14 @@ EntregaFinal-BackEnd/
 │   │   ├── cartController.js
 │   │   └── productController.js
 │   ├── models/
-│   │   ├── carts.js
-│   │   └── product.js
+│   │   ├── carts.model.js
+│   │   ├── user.model.js
+│   │   └── product.model.js
 │   ├── routes/
 │   │   ├── carts.js
-│   │   └── products.js
+│   │   ├── products.js
+│   │   ├── users.js
+│   │   ├── sessions.js
 │   │   └── views.js
 │   ├── middlewares/
 │   │   ├── errorHandler.js
@@ -20,16 +23,22 @@ EntregaFinal-BackEnd/
 │   ├── data/
 │   │   ├── carts.json
 │   │   └── products.json
+│   ├── config/
+│   │   └── passport.js
 │   ├── views/
 │   │   └── layouts/
-│   │         └── main.handlebars
-│   │   ├── cart.handlebars
-│   │   ├── home.handlebars
-│   │   └── realTimeProducts.handlebars
+│   │   │     ├── main.handlebars
+│   │   │     ├── cart.handlebars
+│   │   │     ├── home.handlebars
+│   │   │     └── realTimeProducts.handlebars
 │   ├── public/
 │   │   └── js/
 │   │         └── socketClient.js
 │   ├── app.js
 │   └── path.js
 ├── package.json
+├── nodemon.json
+├── package-lock.json
+├── .env
+├── .gitignore
 └── README.md
