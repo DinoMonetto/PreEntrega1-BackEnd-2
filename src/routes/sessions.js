@@ -8,7 +8,7 @@ router.post('/login', (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err || !user) {
             return res.status(400).json({
-                message: 'Something is not right',
+                message: 'Algo no anda bien...',
                 user: user
             });
         }
@@ -18,7 +18,7 @@ router.post('/login', (req, res, next) => {
                 res.send(err);
             }
 
-            const token = jwt.sign({ id: user._id }, 'your_jwt_secret');
+            const token = jwt.sign({ id: user._id }, 'process.env.JWT_SECRET');
             res.cookie('jwt', token, { httpOnly: true });
             return res.json({ token });
         });

@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     role: { type: String, default: 'user' }
 });
 
-// Hash password before saving
 userSchema.pre('save', function(next) {
     if (this.isModified('password') || this.isNew) {
         this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));

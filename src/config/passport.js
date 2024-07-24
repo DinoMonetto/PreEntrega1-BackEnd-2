@@ -2,7 +2,8 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcrypt';
-import User from '../models/User';
+import User from '../models/user.model.js';
+
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -11,10 +12,10 @@ passport.use(new LocalStrategy({
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return done(null, false, { message: 'Incorrect email.' });
+            return done(null, false, { message: 'Email incorrecto.' });
         }
         if (!bcrypt.compareSync(password, user.password)) {
-            return done(null, false, { message: 'Incorrect password.' });
+            return done(null, false, { message: 'Password incorrecta.' });
         }
         return done(null, user);
     } catch (err) {
@@ -24,7 +25,7 @@ passport.use(new LocalStrategy({
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'your_jwt_secret'
+    secretOrKey: 'process.env.JWT_SECRET'
 };
 
 passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
